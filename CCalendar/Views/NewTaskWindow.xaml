@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:Todol"
         mc:Ignorable="d"
         Title="Create New Task" Height="257" Width="300" MinHeight="257"
-        MaxHeight="257" MinWidth="300" MaxWidth="300" ResizeMode="NoResize" WindowStyle="None" Icon="/TodolIcon.png" Foreground="Black" SizeToContent="WidthAndHeight" MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseUp="Window_MouseUp">
+        MaxHeight="257" MinWidth="300" MaxWidth="300" ResizeMode="NoResize" WindowStyle="None" Icon="../images/TodolIcon.png" Foreground="Black" SizeToContent="WidthAndHeight" MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseUp="Window_MouseUp">
     
     <Grid x:Name="mainGrid">
         
@@ -25,10 +25,17 @@
         <Label x:Name="labelTaskDueDate" Content="I will finish on this day" HorizontalAlignment="Left" Margin="10,169,0,0" VerticalAlignment="Top" Height="26" Visibility="Hidden" />
         <DatePicker x:Name="datePicker_TaskStartDate" Margin="0,139,15,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" SelectedDateChanged="datePicker_TaskStartDate_SelectedDateChanged"/>
         <DatePicker x:Name="datePicker_TaskDueDate" Margin="0,170,15,0" VerticalAlignment="Top"  HorizontalAlignment="Right" Width="102" Visibility="Hidden" SelectedDateChanged="datePicker_TaskDueDate_SelectedDateChanged"/>
+        <Border BorderBrush="Black" BorderThickness="1"/>
 
 
     </Grid>
     <i:Interaction.Behaviors>
         <i:MouseDragElementBehavior/>
     </i:Interaction.Behaviors>
+
+    <Window.Effect>
+        <DropShadowEffect >
+
+        </DropShadowEffect>
+    </Window.Effect>
 </Window>

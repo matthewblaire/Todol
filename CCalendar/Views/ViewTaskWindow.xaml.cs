@@ -2,6 +2,9 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Todol.Models;
+using Todol.Services;
+using Todol.ViewModels;
 
 namespace Todol
 {
@@ -10,42 +13,31 @@ namespace Todol
     /// </summary>
     public partial class ViewTaskWindow : Window
     {
-        /// <summary>
-        /// Keeps track of whether of not user is editing
-        /// </summary>
-        private bool _isEditing = false;
-        /// <summary>
-        /// The task that this window is attempting to show
-        /// </summary>
-        private Task _task;
-        /// <summary>
-        /// Toggles the _isEditing flag
-        /// </summary>
-        private void ToggleEditing()
-        {
-            _isEditing = !_isEditing;
-        }
+        
+        private ViewTaskWindowViewModel _viewModel;
+        
 
         public ViewTaskWindow(Task task)
         {
-            _task = task;
+            _viewModel = new ViewTaskWindowViewModel();
+            _viewModel.Task = task;
             InitializeComponent();
-            _isEditing = false;
-            textBox_Title.Text = _task.Title;
+            
+            textBox_Title.Text = _viewModel.Task.Title;
+            textBox_Description.Text = _viewModel.Task.Description;
 
             textBox_Description.Height = Double.NaN;
-            textBox_Description.Text = _task.Description;
-
+            
             //Only show the due date if the task has one
-            if (_task.DueDate is not null)
+            if (_viewModel.Task.DueDate is not null)
             {
-                labelDueDate.Content = _task.DueDate;
-                datePicker.SelectedDate = _task.DueDate;
+                labelDueDate.Content = ((DateTime)_viewModel.Task.DueDate).Date;
+                datePicker.SelectedDate = _viewModel.Task.DueDate;
                 labelDueDate.Visibility = Visibility.Visible;
             }
             else
             {
-                labelDueDate.Visibility = Visibility.Hidden;
+                labelDueDate.Content = "No Due Date";
             }
 
         }
@@ -67,8 +59,8 @@ namespace Todol
         /// <param name="e"></param>
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            ToggleEditing();
-            if (_isEditing)
+            _viewModel.ToggleEditing();
+            if (_viewModel.IsEditing)
             {
                 // User is editing, so update objects accordingly
                 ShowEditingState();
@@ -76,23 +68,24 @@ namespace Todol
             else
             {
 
-                // User has finished editing. Save the task
+                // User has finished editing. Show normal state
                 ShowNormalState();
 
-                _task.Description = textBox_Description.Text;
+                
+                _viewModel.Task.Description = textBox_Description.Text;
                 if (datePicker.SelectedDate is not null)
                 {
-                    _task.DueDate = ((DateTime)datePicker.SelectedDate).Date;
-                    labelDueDate.Content = _task.DueDate;
-                    datePicker.SelectedDate = _task.DueDate;
+                    _viewModel.Task.DueDate = ((DateTime)datePicker.SelectedDate).Date;
+                    labelDueDate.Content = _viewModel.Task.DueDate;
+                    datePicker.SelectedDate = _viewModel.Task.DueDate;
                 }
                 else
                 {
-                    _task.DueDate = null;
+                    _viewModel.Task.DueDate = null;
                     labelDueDate.Content = "";
                 }
 
-                _task.Title = textBox_Title.Text;
+                _viewModel.Task.Title = textBox_Title.Text;
             }
 
         }
@@ -123,7 +116,7 @@ namespace Todol
             textBox_Description.BorderBrush = Brushes.Black;
 
 
-            if (_task.DueDate is not null)
+            if (_viewModel.Task.DueDate is not null)
                 labelDueDate.Visibility = Visibility.Visible;
             else labelDueDate.Visibility = Visibility.Hidden;
 
@@ -193,13 +186,13 @@ namespace Todol
             if (ShowDeleteConfirmationDialog())
             {
                 Close();
-                TaskManager.RemoveTask(_task);
+                TaskManager.RemoveTask(_viewModel.Task);
             }
         }
 
         private void btnComplete_Click(object sender, RoutedEventArgs e)
         {
-            _task.MarkComplete();
+            _viewModel.Task.MarkComplete();
             Close();
         }
     }

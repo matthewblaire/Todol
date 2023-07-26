@@ -1,5 +1,7 @@
 ﻿using System;
-namespace Todol
+using Todol.Models;
+
+namespace Todol.Helpers
 {
     public class TaskListUpdateEventArgs : EventArgs
     {

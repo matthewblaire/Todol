@@ -1,9 +1,9 @@
-﻿namespace Todol
+﻿namespace Todol.Helpers
 {
     /// <summary>
     /// Helper for NewTaskWindow. Keeps track of whether the user is ready to save the task or not.
     /// </summary>
-    public class NewTaskWindow_TaskCreationHelper
+    public class NewTaskWindow_TaskCreationProgressTracker
     {
         private bool _hasChangedTitle;
         private bool _hasChangedDescription;
@@ -18,7 +18,7 @@
         public bool UserHasSelectedStartDate { set { _hasSelectedStartDate = value; } }
         public bool UserHasSelectedDueDate { set { _hasSelectedDueDate = value; } }
 
-        public NewTaskWindow_TaskCreationHelper()
+        public NewTaskWindow_TaskCreationProgressTracker()
         {
             _hasChangedTitle = false;
             _hasChangedDescription = false;

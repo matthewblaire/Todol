@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Todol"
         mc:Ignorable="d"
-        Title="CustomMessageBox" Height="100" Width="151" WindowStyle="None" Icon="/TodolIcon.png" ResizeMode="NoResize">
+        Title="CustomMessageBox" Height="100" Width="151" WindowStyle="None" Icon="../images/TodolIcon.png" ResizeMode="NoResize" ShowInTaskbar="False">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="19*"/>
@@ -15,5 +15,6 @@
         <TextBlock x:Name="message" Margin="10,10,10,0" TextWrapping="Wrap" Text="Are you sure you want to delete these tasks?" VerticalAlignment="Top" TextAlignment="Center" Height="80" IsEnabled="True" FontSize="12" Grid.ColumnSpan="3"/>
         <Button x:Name="affirmativeButton" Content="Yes" Margin="10,0,67,10" Grid.Column="1" Height="20" VerticalAlignment="Bottom" Click="AffirmativeButton_Click"/>
         <Button x:Name="negativeButton" Content="No" Margin="67,0,10,10" Grid.Column="1" Height="20" VerticalAlignment="Bottom" Click="NegativeButton_Click"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="3"/>
     </Grid>
 </Window>

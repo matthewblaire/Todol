@@ -14,7 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+using Todol.Models;
 
 namespace Todol
 {
@@ -25,9 +25,9 @@ namespace Todol
     {
         private readonly string filepath = "filters.json";
 
-        TaskManager.TaskListFilter _taskListFilter;
+        TaskListFilter _taskListFilter;
         
-        public TaskManager.TaskListFilter Filter 
+        public TaskListFilter Filter 
         { 
             get 
             { 
@@ -63,7 +63,7 @@ namespace Todol
                 string json = File.ReadAllText(filepath);
                 try
                 {
-                    _taskListFilter = JsonConvert.DeserializeObject<TaskManager.TaskListFilter>(json);
+                    _taskListFilter = JsonConvert.DeserializeObject<TaskListFilter>(json);
                     return;
                 } catch
                 {
@@ -73,7 +73,7 @@ namespace Todol
                
             }
             
-            _taskListFilter = new TaskManager.TaskListFilter();
+            _taskListFilter = new TaskListFilter();
             
         }
 

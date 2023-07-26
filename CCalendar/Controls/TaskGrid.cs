@@ -1,32 +1,30 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Media;
+using Todol.Models;
+using System.Windows;
 
-namespace Todol
+namespace Todol.Controls
 {
-
-
-    public static class TaskGridCreator
+    /// <summary>
+    /// literally just a grid with a reference to the task that it's supposed to display
+    /// </summary>
+    public class TaskGrid : Grid
     {
-
-
-
-        /// <summary>
-        /// Returns a grid with two TextBox objects reflecting Task.Title and Task.DueDate
-        /// </summary>
-        /// <param name="t"></param>
-        /// <returns></returns>
-        public static TaskGrid CreateTaskGrid(Task t)
+        private Task _task;
+        public Task ParentTask { get { return _task; } }
+        public TaskGrid(Task task)
         {
-            var grid = new TaskGrid(t);
-            grid.HorizontalAlignment = HorizontalAlignment.Stretch;
+            _task = task;
+
+           
+            this.HorizontalAlignment = HorizontalAlignment.Stretch;
 
             var titleTextBox = new TextBox();
-            titleTextBox.Text = t.Title;
+            titleTextBox.Text = task.Title;
             titleTextBox.HorizontalAlignment = HorizontalAlignment.Left;
             titleTextBox.IsReadOnly = true;
             titleTextBox.IsHitTestVisible = false;
-            grid.Children.Add(titleTextBox);
+            this.Children.Add(titleTextBox);
 
 
             var dueDateTextBox = new TextBox();
@@ -34,30 +32,23 @@ namespace Todol
             dueDateTextBox.HorizontalContentAlignment = HorizontalAlignment.Right;
             dueDateTextBox.IsHitTestVisible = false;
             dueDateTextBox.IsReadOnly = true;
-            
 
-            if (t.DueDate is not null)
+
+            if (task.DueDate is not null)
             {
-                dueDateTextBox.Text = "Due: "+t.DueDate?.Date.ToString("d");
-                grid.Children.Add(dueDateTextBox);
+                dueDateTextBox.Text = "Due: " + task.DueDate?.Date.ToString("d");
+                this.Children.Add(dueDateTextBox);
             }
-            else if (t.IsComplete)
+            else if (task.IsComplete)
             {
                 dueDateTextBox.Text = "DONE";
                 dueDateTextBox.Background = Brushes.Green;
                 dueDateTextBox.Foreground = Brushes.AliceBlue;
                 titleTextBox.Foreground = Brushes.Gray;
-                grid.Children.Add(dueDateTextBox);
+                this.Children.Add(dueDateTextBox);
             }
-
-
             
-            
-
-
-            return grid;
         }
-
     }
 
 }

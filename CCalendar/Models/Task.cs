@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Todol
+namespace Todol.Models
 {
 
     /// <summary>
@@ -165,27 +165,33 @@ namespace Todol
         public bool Equals(Task other)
         {
             bool isEqual = true;
-            if(other != null)
+            if (other != null)
             {
-                if (DueDate != other.DueDate) { 
-                    isEqual = false;
-                } else if (StartDate != other.StartDate)
-                {
-                    isEqual = false;
-                } else if (DateCreated != other.DateCreated)
-                {
-                    isEqual = false;
-                } else if (Title.Equals(other.Title) == false)
-                {
-                    isEqual = false;
-                } else if (Description.Equals(other.Description) == false)
-                {
-                    isEqual = false;
-                } else if (IsComplete != other.IsComplete)
+                if (DueDate != other.DueDate)
                 {
                     isEqual = false;
                 }
-                
+                else if (StartDate != other.StartDate)
+                {
+                    isEqual = false;
+                }
+                else if (DateCreated != other.DateCreated)
+                {
+                    isEqual = false;
+                }
+                else if (Title.Equals(other.Title) == false)
+                {
+                    isEqual = false;
+                }
+                else if (Description.Equals(other.Description) == false)
+                {
+                    isEqual = false;
+                }
+                else if (IsComplete != other.IsComplete)
+                {
+                    isEqual = false;
+                }
+
             }
             return isEqual;
         }

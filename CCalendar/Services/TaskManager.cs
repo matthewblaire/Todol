@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Automation.Peers;
+using Todol.Models;
+using Todol.Helpers;
 
-namespace Todol
+namespace Todol.Services
 {
     /// <summary>
     /// This class is responsible for saving and loading task data.
     /// </summary>
-    public static partial class TaskManager
+    public static class TaskManager
     {
 
         private static bool IsFirstLoad = true;
@@ -44,7 +46,7 @@ namespace Todol
 
         private static void OnTaskListSizeChanged(Task task)
         {
-            var eventArgs = new TaskListUpdateEventArgs(true,task);
+            var eventArgs = new TaskListUpdateEventArgs(true, task);
             TaskListSizeChanged?.Invoke(null, eventArgs);
         }
 
@@ -56,20 +58,21 @@ namespace Todol
 
         public static void LoadTasks()
         {
-            
+
             if (File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
-                _tasks= JsonConvert.DeserializeObject<List<Task>>(json);
+                _tasks = JsonConvert.DeserializeObject<List<Task>>(json);
                 OnTaskListSizeChanged();
             }
             else
             {
                 if (!IsFirstLoad)
                 {
+                    
                     MessageBox.Show(filePath + " not found. Try creating and exporting some tasks.\n(Tasks will export automatically when main window is closed)", "Error", MessageBoxButton.OK);
                 }
-                
+
                 //throw new FileNotFoundException(filePath + " not found");
             }
 
@@ -87,17 +90,19 @@ namespace Todol
             if (filter.EarliestDueDate)
             {
                 SortByEarliestDueDate(workingTaskList);
-            } else if (filter.EarliestStartDate)
+            }
+            else if (filter.EarliestStartDate)
             {
                 SortByEarliestStartDate(workingTaskList);
-            } else if (filter.EarliestCreationDate)
+            }
+            else if (filter.EarliestCreationDate)
             {
                 SortByEarliestCreationDate(workingTaskList);
             }
 
             if (filter.ShowCompleted == false)
             {
-               workingTaskList = RemoveCompleted(workingTaskList);
+                workingTaskList = RemoveCompleted(workingTaskList);
             }
 
             if (filter.OnlyShowTasksForToday)
@@ -110,7 +115,7 @@ namespace Todol
 
         private static void SortByEarliestDueDate(List<Task> taskList)
         {
-           for (int i = 0; i < taskList.Count; i++)
+            for (int i = 0; i < taskList.Count; i++)
             {
                 int earliestDueDateIndex = i;
                 Task earliestDueDate = taskList[earliestDueDateIndex];
@@ -120,15 +125,15 @@ namespace Todol
                     {
                         earliestDueDateIndex = j;
                         earliestDueDate = taskList[j];
-                    }                    
+                    }
                 }
-                
+
                 taskList.RemoveAt(earliestDueDateIndex);
                 taskList.Insert(i, earliestDueDate);
 
-                
+
             }
-            
+
 
         }
 
@@ -152,7 +157,7 @@ namespace Todol
 
 
             }
-            
+
         }
 
         private static void SortByEarliestCreationDate(List<Task> taskList)
@@ -174,7 +179,7 @@ namespace Todol
                 taskList.Insert(i, earliestCreationDate);
 
             }
-            
+
         }
 
         private static List<Task> RemoveCompleted(List<Task> taskList)
@@ -188,20 +193,20 @@ namespace Todol
                 }
             }
 
-            return workingList;  
-            
+            return workingList;
+
         }
 
         private static void removeFutureStartDateTasks(List<Task> taskList)
         {
-            for (int i = 0; i< taskList.Count; i++)
+            for (int i = 0; i < taskList.Count; i++)
             {
                 if (taskList[i].StartDate > DateTime.Now.Date)
                 {
                     taskList.RemoveAt(i);
                 }
             }
-           
+
         }
 
     }

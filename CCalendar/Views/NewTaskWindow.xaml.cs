@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Todol.Helpers;
+using Todol.Models;
+using Todol.Services;
+using Todol.ViewModels;
 
 namespace Todol
 {
@@ -13,25 +17,26 @@ namespace Todol
         /// <summary>
         /// default string for task name text box
         /// </summary>
-        private readonly string DEFAULT_TEXT_TASK_NAME = "Enter task name...";
+        public readonly string DEFAULT_TEXT_TASK_NAME = "Enter task name...";
         /// <summary>
         /// default string for task description text box
         /// </summary>
-        private readonly string DEFAULT_TEXT_TASK_DESCRIPTION = "Add a little more detail...";
+        public readonly string DEFAULT_TEXT_TASK_DESCRIPTION = "Add a little more detail...";
         /// <summary>
         /// Reference to the TaskCreationHelper
         /// </summary>
-        private NewTaskWindow_TaskCreationHelper _helper;
+        private NewTaskWindow_TaskCreationProgressTracker _helper;
+
         public NewTaskWindow()
         {
-
+            _helper = new NewTaskWindow_TaskCreationProgressTracker();
             InitializeComponent();
 
             //Initialize fields 
             datePicker_TaskStartDate.SelectedDate = DateTime.Now.Date;
             datePicker_TaskDueDate.SelectedDate = DateTime.Now.Date.AddDays(1);
-            _helper = new NewTaskWindow_TaskCreationHelper();
-
+            
+            
 
 
         }
@@ -97,10 +102,8 @@ namespace Todol
             int newHeight = 283;
             int newWidth = 300;
             SetWindowSize(newHeight, newWidth);
-
             _helper.TaskRequiresDueDate = true;
             btnSaveTask.IsEnabled = _helper.IsReadyToSave;
-
             labelTaskDueDate.Visibility = Visibility.Visible;
             datePicker_TaskDueDate.Visibility = Visibility.Visible;
         }

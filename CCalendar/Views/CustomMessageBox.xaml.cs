@@ -24,13 +24,41 @@ namespace Todol
         /// True when user selects affirmative button, false when user selects negative button
         /// </summary>
         public bool Result { get; set; }
-        public CustomMessageBox(string messageText, string affirmativeText, string negativeText)
+
+        public CustomMessageBox()
         {
             InitializeComponent();
-            
+        }
+
+        public CustomMessageBox(string messageText)
+            :this()
+        {
+            message.Text = messageText;
+            message.VerticalAlignment = VerticalAlignment.Center;
+            message.HorizontalAlignment = HorizontalAlignment.Center;
+            message.Margin = new Thickness(0,0,0,0);
+            affirmativeButton.Visibility = Visibility.Hidden;
+            negativeButton.Visibility = Visibility.Hidden;
+        }
+        public CustomMessageBox(string messageText, string affirmativeText, string negativeText)
+            : this()
+        {
+           
             message.Text = messageText;
             affirmativeButton.Content = affirmativeText;
             negativeButton.Content = negativeText;
+        }
+
+        public CustomMessageBox(string messageText, string affirmativeText)
+            : this()
+        {
+            InitializeComponent();
+            negativeButton.Visibility = Visibility.Hidden;
+
+            message.Text = messageText;
+            affirmativeButton.Content = affirmativeText;
+            affirmativeButton.HorizontalAlignment = HorizontalAlignment.Center;
+           
         }
 
         private void AffirmativeButton_Click(object sender, RoutedEventArgs e)
@@ -45,7 +73,7 @@ namespace Todol
             Close();
         }
 
-       
+        
 
     }
 }

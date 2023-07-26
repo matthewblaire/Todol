@@ -14,11 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="TodolIcon.png" />
+    <Resource Include="images\TodolIcon.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TodolIcon.png">
+    <None Update="images\TodolIcon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

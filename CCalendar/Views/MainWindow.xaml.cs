@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Todol.Controls;
+using Todol.Models;
+using Todol.Services;
+using Todol.ViewModels;
 namespace Todol
 {
 
@@ -12,16 +16,20 @@ namespace Todol
     /// </summary>
     public partial class MainWindow : Window
     {
-        static FilterWindow filterWindow;
+
+        private readonly MainWindowViewModel _viewModel;
+        
 
         private DateTime? _selectedDate;
         public MainWindow()
         {
             InitializeComponent();
+            _viewModel = new MainWindowViewModel();
+
             TaskManager.TaskListSizeChanged += UpdateListBox;
             Task.TaskUpdated += UpdateListBox;
-            filterWindow = new FilterWindow();
             FilterWindow.FilterUpdated += UpdateListBox;
+
         }
 
         /// <summary>
@@ -32,27 +40,7 @@ namespace Todol
         private void UpdateListBox(object? sender, EventArgs e)
         {
             listBox.Items.Clear();
-
-            if (TaskManager.GetTaskList().Count > 0)
-            {
-                foreach (var task in TaskManager.GetTaskList(filterWindow.Filter))
-                {
-
-                    if (task.IsComplete && task.DueDate is null)
-                    {
-                        var insertPosition = listBox.Items.Count >= 0 ? listBox.Items.Count : 0;
-                        listBox.Items.Insert(insertPosition, TaskGridCreator.CreateTaskGrid(task));
-                    }
-                    else
-                    {
-                        listBox.Items.Insert(0, TaskGridCreator.CreateTaskGrid(task));
-                    }
-
-                }
-
-                
-
-            }
+            _viewModel.PopulateListBox(listBox);
         }
 
 
@@ -119,8 +107,15 @@ namespace Todol
 
         private void btnImportTaskList_Click(object sender, RoutedEventArgs e)
         {
+            var loadingMessage = new CustomMessageBox("Loading...");
+            var left = Left - (loadingMessage.Width / 2) + (this.ActualWidth / 2);
+            var top = Top - (loadingMessage.Height / 2) + (this.ActualHeight / 2);
+            loadingMessage.Left = left;
+            loadingMessage.Top = top;
+            loadingMessage.Show();
             TaskManager.LoadTasks();
             UpdateListBox(sender, e);
+            loadingMessage.Close();
         }
 
         private void datePicker_Loaded(object sender, RoutedEventArgs e)
@@ -137,27 +132,14 @@ namespace Todol
         private void Window_Closed(object sender, EventArgs e)
         {
             TaskManager.SaveTasks();
-            filterWindow.Close();
+            _viewModel.CloseFilterWindow();
         }
 
         private void ContextMenu_Delete_Click(object sender, RoutedEventArgs e)
         {
             if (ShowDeleteConfirmationDialog())
             {
-                List<Task> tasksToRemove = new List<Task>();
-                //Add selected tasks to their own list, that way we don't run into overflow issues when we change the size of the listBox list.
-                foreach (var item in listBox.SelectedItems)
-                {
-                    TaskGrid grid = (TaskGrid)item;
-                    Task task = grid.ParentTask;
-                    tasksToRemove.Add(task);
-                }
-
-                //Delete the tasks from the TaskManager
-                foreach (var t in tasksToRemove)
-                {
-                    TaskManager.RemoveTask(t);
-                }
+                _viewModel.DeleteTasks(listBox.SelectedItems);
             }
         }
 
@@ -170,8 +152,10 @@ namespace Todol
         {
             var w = new CustomMessageBox(messageText: "Are you sure you want to delete these tasks?", affirmativeText: "Yes", negativeText: "No");
 
-            w.Left = Left + Mouse.GetPosition(this).X;
-            w.Top = Top + Mouse.GetPosition(this).Y;
+            var left = Left - (w.Width/2) + (this.ActualWidth/2);
+            var top = Top - (w.Height/2) + (this.ActualHeight/2);
+            w.Left = left;
+            w.Top = top;
 
             w.ShowDialog();
             return w.Result;
@@ -187,12 +171,10 @@ namespace Todol
         private void btnFilter_Click(object sender, RoutedEventArgs e)
         {
             
-            filterWindow.Left = Left + Mouse.GetPosition(this).X;
-            filterWindow.Top = Top + Mouse.GetPosition(this).Y;
+            var left = Left + Mouse.GetPosition(this).X;
+            var top = Top + Mouse.GetPosition(this).Y;
             
-            //Subscribe to filter event
-
-            filterWindow.Show();
+            _viewModel.OpenFilterWindow(left, top);
             
         }
 
@@ -200,11 +182,21 @@ namespace Todol
 
         private void Window_MouseEntered(object sender, RoutedEventArgs e)
         {
-            if (filterWindow != null) { filterWindow.Hide(); }
-
+            if (_viewModel.FilterIsShowing) 
+            { 
+                _viewModel.HideFilterWindow(); 
+            }
         }
 
-       
-
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                if (listBox.SelectedItems.Count > 0 && ShowDeleteConfirmationDialog())
+                {
+                    _viewModel.DeleteTasks(listBox.SelectedItems);
+                }
+            } 
+        }
     }
 }

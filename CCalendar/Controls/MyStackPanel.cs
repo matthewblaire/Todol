@@ -1,5 +1,7 @@
 ﻿using System.Windows.Controls;
-namespace Todol
+using Todol.Models;
+
+namespace Todol.Controls
 {
     /// <summary>
     /// Literally just the regular StackPanel, but I added a property called ParentTask that points to the task that created the StackPanel

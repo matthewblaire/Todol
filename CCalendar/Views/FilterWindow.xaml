@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Todol"
         mc:Ignorable="d"
-        Title="FilterWindow" Height="200" Width="150" WindowStyle="None" ShowInTaskbar="False" Closed="Window_Closed">
+        Title="FilterWindow" Height="200" Width="150" WindowStyle="None" ShowInTaskbar="False" Closed="Window_Closed" ResizeMode="NoResize">
     <Grid>
         <Label x:Name="lblFilterModes" Content="Filter modes:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,0,0"/>
         <CheckBox x:Name="checkBox_TodayOnly" Content="Today Only" ToolTip="Only show tasks with a start date of today or before" HorizontalAlignment="Left" Margin="10,26,0,0" VerticalAlignment="Top" Checked="checkBox_TodayOnly_Checked" Unchecked="checkBox_TodayOnly_Unchecked"/>
