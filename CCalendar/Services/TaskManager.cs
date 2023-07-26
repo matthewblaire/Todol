@@ -16,11 +16,14 @@ namespace Todol.Services
     {
 
         private static bool IsFirstLoad = true;
-
+        private static DateTime _today = DateTime.Now.Date;
         private static readonly string filePath = "tasks.json"; // Choose a suitable file path
         private static List<Task> _tasks = new List<Task>();
         public static event EventHandler? TaskListSizeChanged;
         public static List<Task> GetTaskList() { return _tasks; }
+
+        public static DateTime Today { get { return _today; } set { _today = value; } }
+
         public static void AddTask(Task task)
         {
             if (task is not null)
@@ -201,7 +204,7 @@ namespace Todol.Services
         {
             for (int i = 0; i < taskList.Count; i++)
             {
-                if (taskList[i].StartDate > DateTime.Now.Date)
+                if (taskList[i].StartDate > Today)
                 {
                     taskList.RemoveAt(i);
                 }

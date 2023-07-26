@@ -51,8 +51,12 @@ namespace Todol
         /// <param name="e"></param>
         private void datePicker_SelectedDateChanged(object? sender, SelectionChangedEventArgs e)
         {
-            _selectedDate = datePicker.SelectedDate;
+            if (datePicker.SelectedDate != null) {
+                TaskManager.Today = (DateTime)datePicker.SelectedDate;
+            }
+
             UpdateListBox(sender, e);
+
 
         }
 
