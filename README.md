@@ -1,5 +1,6 @@
 # Todol
 Portable, Minimalistic task management/productivity app written in C# using WPF. 
+https://github.com/matthewblaire/Todol/tree/master
 
 ## Installation
 No install required, just download and extract build.zip to a folder and run Todol.exe
