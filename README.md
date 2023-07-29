@@ -38,5 +38,12 @@ By pressing the filter button, you can access various sorting and filtering mode
   
 ![FilterModes](https://github.com/matthewblaire/Todol/assets/49771927/70144d24-ee1a-4471-b5b2-582d22185c21)
 
+# Plans for the future
+I'm moving on to other projects for the time being, but I'd eventually like to improve the functionality of this app to include cloud-storage of tasks. I think that would be a good way to get some extra REST experience.
+
+PLEASE let me know if you have any ideas to improve this app.
+  
+
+
 
 
